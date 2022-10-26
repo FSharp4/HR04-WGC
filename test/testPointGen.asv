@@ -1,0 +1,27 @@
+a = 1;
+p = 10000;
+points = generateHexagonPoints(a, p, false);
+badPoints = generateHexagonPoints(a, p, true);
+
+
+x = ones(1, 7);
+y = zeros(1, 7);
+[theta, r] = cart2pol(x, y)
+theta = [0:5, 0] * pi / 3;
+[x, y] = pol2cart(theta, r);
+
+
+
+figure
+subplot(2, 1, 2)
+scatter(points(:, 1), points(:, 2));
+pbaspect([1 1 1])
+hold on
+plot(x, y)
+hold off
+xlabel("Algorithm as written")
+
+subplot(2, 1, 1)
+scatter(badPoints(:, 1), badPoints(:, 2));
+pbaspect([1 1 1])
+

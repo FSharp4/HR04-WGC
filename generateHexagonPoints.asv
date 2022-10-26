@@ -1,0 +1,23 @@
+function points = generateHexagonPoints(a, p)
+%GENERATEHEXAGONPOINTS Summary of this function goes here
+%   Detailed explanation goes here
+n = 6;
+angle = (n - 2) * pi / (2 * n);
+k = a * sin(angle) * log(tan((n + 2) * pi / (4 * n))) ...
+    - log(tan(angle / 2));
+u1 = rand(1, p);
+u2 = rand(1, p);
+theta = softRescale(- (n - 2) * pi / (2 * n) ...
+    + 2 * atan(exp(k * u1 ./ (a * sin(angle)) + log(tan(angle / 2)))), 0, angle);
+
+R = softRescale(a * sin(angle) ./ sin(theta + angle), 0, a);
+% if max(R) > a
+%     R = min(R, a);
+% end
+r = R .* sqrt(u2); % Sometimes slightly larger than a...
+t = randi([0, n-1], 1, p);
+theta = theta + angle * t;
+[x, y] = pol2cart(theta, r);
+points = [x; y]';
+end
+
