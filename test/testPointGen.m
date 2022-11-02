@@ -1,4 +1,4 @@
-a = 5;
+a = 10;
 p = 10000;
 points = generateHexagonPoints(a, p);
 
