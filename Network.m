@@ -43,17 +43,13 @@ classdef Network
 
         end
 
-        function sample = randomLogNormal(~, m, n)
-
+        function sample = randomLogNormal(obj, m, n)
             if nargin == 1
-                %     sample = exp(randn() * obj.SigmaShadow / 10);
-                sample = 1;
+                sample = exp(randn() * obj.SigmaShadow / 10);
             elseif nargin == 2
-                %     sample = exp(randn(m) * obj.SigmaShadow / 10);
-                sample = ones(m);
+                sample = exp(randn(m) * obj.SigmaShadow / 10);
             else
-                %     sample = exp(randn(m, n) * obj.SigmaShadow / 10);
-                sample = ones(m, n);
+                sample = exp(randn(m, n) * obj.SigmaShadow / 10);
             end
 
         end
@@ -76,7 +72,7 @@ classdef Network
             % CALCULATELSFCS Function for calculating ALL Large-Scale
             %   Fading Coefficients within a network obj.
             %
-            %   Returned as a n x m x n array where n is the number of
+            %   Returned as a m x n x n array where n is the number of
             %   cells and m is the number of users within a cell.
             %   The array is indexed such that the lsfc of user j in cell k
             %   against base station i can be found at index (j, k, i)
@@ -130,11 +126,16 @@ classdef Network
             lsfc = obj.calculateLSFCs();
             if nargin > 1 && twoDimensional == true
                 zetas = zeros(k*l, k*l);
-                for jj = 1:k
-                    for kk = 1:l
+                for jj = 1:k % Iterate over user in cell
+                    for kk = 1:l % Iterate over cell
                         for jj2 = 1:k
+                            if jj2 == jj
+                                continue
+                            end
                             for kk2 = 1:l
-                                zetas((kk - 1) + jj, (kk2 - 1) + jj2) = ...
+                                index1 = (kk - 1) * k + jj;
+                                index2 = (kk2 - 1) * k + jj2;
+                                zetas(index1, index2) = ...
                                     lsfc(jj2, kk2, jj) ^ 2 / ...
                                     lsfc(jj, kk, jj) ^ 2 + ...
                                     lsfc(jj, kk, jj2) ^ 2 / ...
