@@ -12,14 +12,16 @@ classdef Network
         Cells = [];
         SigmaShadow = 1;
         PathLossExponent = 3;
+        M = 8;
     end
 
     methods
 
-        function obj = Network(r, k, l)
+        function obj = Network(r, k, l, m)
             %NETWORK Construct a cellular network for WGC-PD simulations
             %   Constructs a network of k cells, with radius r, having l
             %   users.
+            obj.M = m
             obj.Cells = NetworkCell(r, k, l);
         end
 
